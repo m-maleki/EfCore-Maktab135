@@ -1,10 +1,11 @@
-﻿using System;
+﻿using EfCore_Maktab135.Entities;
+using EfCore_Maktab135.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EfCore_Maktab135.Entities;
-using EfCore_Maktab135.Interfaces.Repositories;
 
 namespace EfCore_Maktab135.Infrastructure.Repositories
 {
@@ -32,7 +33,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
 
         public List<Category> GetAll()
         {
-            return _dbContext.Categories.ToList();
+            return _dbContext.Categories.AsNoTracking().ToList();
         }
 
         public void Update(Category category)
@@ -59,3 +60,6 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
         }
     }
 }
+
+//Query(Get,GetAll,..)
+//Command(add,update,remove)

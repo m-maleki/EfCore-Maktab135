@@ -1,4 +1,5 @@
 ﻿using EfCore_Maktab135.Entities;
+using EfCore_Maktab135.Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfCore_Maktab135.Infrastructure
@@ -9,23 +10,36 @@ namespace EfCore_Maktab135.Infrastructure
         public DbSet<Category> Categories { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserProfile> UserProfile { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasData(new List<Category>()
-            {
-                new Category() { Id = 1, Name = "Mobile" },
-                new Category() { Id = 2, Name = "Pc" },
-                new Category() { Id = 3, Name = "Laptop" }
-            });
+            modelBuilder.ApplyConfiguration(new CategoryConfigurations());
+            modelBuilder.ApplyConfiguration(new ProductConfigurations());
+            modelBuilder.ApplyConfiguration(new UserConfigurations());
+            modelBuilder.ApplyConfiguration(new UserProfileConfig());
 
-            modelBuilder.Entity<Product>().HasData(new List<Product>()
-            {
-                new Product(){Id = 1 , Name = "Iphone 16" ,Color = "Black" , CreateAt = new DateTime(2025,09,22) , Price = 9000000 , CategoryId = 1,Count = 10},
-                new Product(){Id = 2 , Name = "Iphone 10" ,Color = "Silver" , CreateAt = new DateTime(2025,09,22) , Price = 2000000 , CategoryId = 1,Count = 30},
-                new Product(){Id = 3 , Name = "Asus N510" ,Color = "Black" , CreateAt = new DateTime(2025,09,22) , Price = 3500000 , CategoryId = 3,Count = 20},
-            });
+
+
+            modelBuilder.Entity<Order>()
+                .HasMany(x=>x.OrderItems)
+                .WithOne(x=>x.Order)
+                .HasForeignKey(x=>x.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(x=>x.User)
+                .WithMany(x=>x.Orders)
+                .HasForeignKey(x=>x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(x=>x.User)
+                .WithMany(x=>x.OrderItems)
+                .HasForeignKey(x=>x.UserId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
 
             base.OnModelCreating(modelBuilder);
         }

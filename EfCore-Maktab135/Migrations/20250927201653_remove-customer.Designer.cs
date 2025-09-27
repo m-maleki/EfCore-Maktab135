@@ -4,6 +4,7 @@ using EfCore_Maktab135.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfCore_Maktab135.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250927201653_remove-customer")]
+    partial class removecustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,6 +93,9 @@ namespace EfCore_Maktab135.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("OrderId")
@@ -279,7 +285,7 @@ namespace EfCore_Maktab135.Migrations
                         .IsRequired();
 
                     b.HasOne("EfCore_Maktab135.Entities.User", "User")
-                        .WithMany("OrderItems")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -325,8 +331,6 @@ namespace EfCore_Maktab135.Migrations
 
             modelBuilder.Entity("EfCore_Maktab135.Entities.User", b =>
                 {
-                    b.Navigation("OrderItems");
-
                     b.Navigation("Orders");
 
                     b.Navigation("UserProfile")

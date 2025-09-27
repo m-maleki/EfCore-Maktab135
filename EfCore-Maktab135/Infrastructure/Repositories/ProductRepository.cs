@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EfCore_Maktab135.Infrastructure.Repositories
 {
-    public class ProductRepository  : IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext _dbContext = new();
 
@@ -20,14 +20,15 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
         {
             _dbContext.Products.Add(model);
             _dbContext.SaveChanges();
-            
+
             return model.Id;
         }
 
         public Product GetById(int id)
         {
             var product = _dbContext.Products
-                .Include(x=>x.Category)
+                .AsNoTracking()
+                .Include(x => x.Category)
                 .FirstOrDefault(x => x.Id == id);
 
             if (product is null)
@@ -39,6 +40,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
         public List<GetProductDto> GetAll()
         {
             var data = _dbContext.Products
+                .AsNoTracking()
                 .Include(x => x.Category)
                 .Select(x => new GetProductDto
                 {

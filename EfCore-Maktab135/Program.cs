@@ -8,10 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 AppDbContext appDbContext = new AppDbContext();
 
-var result = appDbContext.Orders
-    .Include(x=>x.OrderItems)
-    .ThenInclude(x=>x.Customer)
-    .FirstOrDefault(x => x.Id == 1);
 
 IProductService productService = new ProductService();
 IOrderService orderService = new OrderService();
@@ -71,7 +67,7 @@ if (Console.ReadKey().Key == ConsoleKey.Enter)
 {
     var orderItems = selectedProducts.Select(x => new OrderItem()
     {
-        CustomerId = customerId,
+        //CustomerId = customerId,
         Count = x.Count,
         Price = x.Price,
         ProductId = x.Id,
