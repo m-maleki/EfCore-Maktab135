@@ -21,24 +21,23 @@ namespace EfCore_Maktab135.Infrastructure
             modelBuilder.ApplyConfiguration(new UserProfileConfig());
 
 
-
             modelBuilder.Entity<Order>()
                 .HasMany(x=>x.OrderItems)
                 .WithOne(x=>x.Order)
                 .HasForeignKey(x=>x.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Order>()
                 .HasOne(x=>x.User)
                 .WithMany(x=>x.Orders)
                 .HasForeignKey(x=>x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(x=>x.User)
                 .WithMany(x=>x.OrderItems)
                 .HasForeignKey(x=>x.UserId)
-                .OnDelete(DeleteBehavior.Cascade); 
+                .OnDelete(DeleteBehavior.NoAction); 
 
 
             base.OnModelCreating(modelBuilder);

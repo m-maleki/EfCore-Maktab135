@@ -30,6 +30,9 @@ namespace EfCore_Maktab135.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -43,16 +46,19 @@ namespace EfCore_Maktab135.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Mobile"
                         },
                         new
                         {
                             Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Pc"
                         },
                         new
                         {
                             Id = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Laptop"
                         });
                 });
@@ -91,6 +97,9 @@ namespace EfCore_Maktab135.Migrations
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -136,6 +145,9 @@ namespace EfCore_Maktab135.Migrations
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -157,6 +169,7 @@ namespace EfCore_Maktab135.Migrations
                             Color = "Black",
                             Count = 10,
                             CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Iphone 16",
                             Price = 9000000
                         },
@@ -167,6 +180,7 @@ namespace EfCore_Maktab135.Migrations
                             Color = "Silver",
                             Count = 30,
                             CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Iphone 10",
                             Price = 2000000
                         },
@@ -177,6 +191,7 @@ namespace EfCore_Maktab135.Migrations
                             Color = "Black",
                             Count = 20,
                             CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Asus N510",
                             Price = 3500000
                         });
@@ -189,6 +204,9 @@ namespace EfCore_Maktab135.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Role")
                         .HasColumnType("int");
@@ -209,6 +227,7 @@ namespace EfCore_Maktab135.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = 2,
                             password = "admin",
                             username = "admin"
@@ -216,6 +235,7 @@ namespace EfCore_Maktab135.Migrations
                         new
                         {
                             Id = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Role = 1,
                             password = "user",
                             username = "user"
@@ -258,7 +278,7 @@ namespace EfCore_Maktab135.Migrations
                     b.HasOne("EfCore_Maktab135.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -269,7 +289,7 @@ namespace EfCore_Maktab135.Migrations
                     b.HasOne("EfCore_Maktab135.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("EfCore_Maktab135.Entities.Product", "Product")
@@ -281,7 +301,7 @@ namespace EfCore_Maktab135.Migrations
                     b.HasOne("EfCore_Maktab135.Entities.User", "User")
                         .WithMany("OrderItems")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Order");

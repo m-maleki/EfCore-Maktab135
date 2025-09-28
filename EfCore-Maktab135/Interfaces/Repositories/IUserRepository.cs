@@ -1,5 +1,6 @@
 ﻿using EfCore_Maktab135.Dtos;
 using EfCore_Maktab135.Entities;
+using EfCore_Maktab135.Enum;
 
 namespace EfCore_Maktab135.Interfaces.Repositories
 {
@@ -9,5 +10,6 @@ namespace EfCore_Maktab135.Interfaces.Repositories
         public int Register(CreateUserDto user);
         public GetUserDto Get(int id);
         public List<GetUserDto> GetAll();
+        public UserRole GetRole(string username);
     }
 }

@@ -1,5 +1,6 @@
-﻿using EfCore_Maktab135.Entities;
-using EfCore_Maktab135.Interfaces.Repositories;
+﻿using EfCore_Maktab135.Dtos;
+using EfCore_Maktab135.Entities;
+using EfCore_Maktab135.Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,21 +32,24 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
             return category;
         }
 
-        public List<Category> GetAll()
+        public IEnumerable<GetCategoryDto> GetAll()
         {
-            return _dbContext.Categories.AsNoTracking().ToList();
+            return _dbContext.Categories.AsNoTracking()
+                .Select(x=>new GetCategoryDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                });
         }
 
         public void Update(Category category)
         {
-            var model = _dbContext.Categories.FirstOrDefault(x => x.Id == category.Id);
+            _dbContext.Categories
+                .Where(x => x.Id == category.Id)
+                .ExecuteUpdate(set => set
+                .SetProperty(c => c.Name, category.Name)
+                .SetProperty(c => c.CreatedAt, DateTime.Now));
 
-            if (model is null)
-                throw new Exception($"category with Id {category.Id} not found");
-
-            model.Name = category.Name;
-
-            _dbContext.SaveChanges();
         }
 
         public void Delete(int id)

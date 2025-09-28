@@ -1,10 +1,9 @@
 ﻿namespace EfCore_Maktab135.Entities
 {
-    public class OrderItem
+    public class OrderItem : BaseEntity
     {
         #region Properties
 
-        public int Id { get; set; }
         public int Count { get; set; }
         public int Price { get; set; }
 

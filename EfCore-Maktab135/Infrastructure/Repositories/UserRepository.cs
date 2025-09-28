@@ -1,5 +1,6 @@
 ﻿using EfCore_Maktab135.Dtos;
 using EfCore_Maktab135.Entities;
+using EfCore_Maktab135.Enum;
 using EfCore_Maktab135.Interfaces.Repositories;
 
 namespace EfCore_Maktab135.Infrastructure.Repositories
@@ -34,6 +35,16 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
              }).ToList();
 
             return users;
+        }
+
+        public UserRole GetRole(string username)
+        {
+            var userRole = _dbContext.Users
+                .Where(u => u.username == username)
+                .Select(x=>x.Role)
+                .First();
+
+            return userRole;
         }
 
         public bool Login(string username, string password)

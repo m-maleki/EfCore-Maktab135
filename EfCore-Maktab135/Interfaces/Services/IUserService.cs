@@ -1,4 +1,5 @@
 ﻿using EfCore_Maktab135.Dtos;
+using EfCore_Maktab135.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace EfCore_Maktab135.Interfaces.Services
         public bool Login(string username, string password);
         public int Register(CreateUserDto user);
         public GetUserDto Get(int id);
+        public UserRole GetRole(string username);
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfCore_Maktab135.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250922192119_add-product-seed")]
-    partial class addproductseed
+    [Migration("20250928185938_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,8 @@ namespace EfCore_Maktab135.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -59,23 +60,6 @@ namespace EfCore_Maktab135.Migrations
                         });
                 });
 
-            modelBuilder.Entity("EfCore_Maktab135.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("EfCore_Maktab135.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -90,7 +74,12 @@ namespace EfCore_Maktab135.Migrations
                     b.Property<int>("TotalPrice")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -106,9 +95,6 @@ namespace EfCore_Maktab135.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -118,13 +104,16 @@ namespace EfCore_Maktab135.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("OrderItems");
                 });
@@ -143,6 +132,9 @@ namespace EfCore_Maktab135.Migrations
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreateAt")
                         .HasColumnType("datetime2");
@@ -166,7 +158,8 @@ namespace EfCore_Maktab135.Migrations
                             Id = 1,
                             CategoryId = 1,
                             Color = "Black",
-                            CreateAt = new DateTime(2025, 9, 22, 22, 51, 19, 502, DateTimeKind.Local).AddTicks(4576),
+                            Count = 10,
+                            CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Iphone 16",
                             Price = 9000000
                         },
@@ -175,7 +168,8 @@ namespace EfCore_Maktab135.Migrations
                             Id = 2,
                             CategoryId = 1,
                             Color = "Silver",
-                            CreateAt = new DateTime(2025, 9, 22, 22, 51, 19, 502, DateTimeKind.Local).AddTicks(8747),
+                            Count = 30,
+                            CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Iphone 10",
                             Price = 2000000
                         },
@@ -184,24 +178,101 @@ namespace EfCore_Maktab135.Migrations
                             Id = 3,
                             CategoryId = 3,
                             Color = "Black",
-                            CreateAt = new DateTime(2025, 9, 22, 22, 51, 19, 502, DateTimeKind.Local).AddTicks(8753),
+                            Count = 20,
+                            CreateAt = new DateTime(2025, 9, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Asus N510",
                             Price = 3500000
                         });
                 });
 
-            modelBuilder.Entity("EfCore_Maktab135.Entities.OrderItem", b =>
+            modelBuilder.Entity("EfCore_Maktab135.Entities.User", b =>
                 {
-                    b.HasOne("EfCore_Maktab135.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Role = 2,
+                            password = "admin",
+                            username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Role = 1,
+                            password = "user",
+                            username = "user"
+                        });
+                });
+
+            modelBuilder.Entity("EfCore_Maktab135.Entities.UserProfile", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mobile")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserProfile");
+                });
+
+            modelBuilder.Entity("EfCore_Maktab135.Entities.Order", b =>
+                {
+                    b.HasOne("EfCore_Maktab135.Entities.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EfCore_Maktab135.Entities.OrderItem", b =>
+                {
                     b.HasOne("EfCore_Maktab135.Entities.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("EfCore_Maktab135.Entities.Product", "Product")
@@ -210,11 +281,17 @@ namespace EfCore_Maktab135.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.HasOne("EfCore_Maktab135.Entities.User", "User")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EfCore_Maktab135.Entities.Product", b =>
@@ -228,6 +305,17 @@ namespace EfCore_Maktab135.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("EfCore_Maktab135.Entities.UserProfile", b =>
+                {
+                    b.HasOne("EfCore_Maktab135.Entities.User", "User")
+                        .WithOne("UserProfile")
+                        .HasForeignKey("EfCore_Maktab135.Entities.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EfCore_Maktab135.Entities.Category", b =>
                 {
                     b.Navigation("Products");
@@ -236,6 +324,16 @@ namespace EfCore_Maktab135.Migrations
             modelBuilder.Entity("EfCore_Maktab135.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("EfCore_Maktab135.Entities.User", b =>
+                {
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("UserProfile")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
