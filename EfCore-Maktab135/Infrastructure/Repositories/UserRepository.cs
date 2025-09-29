@@ -24,7 +24,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
             return user;
         }
 
-        public GetUserDto GetByUsername(string username)
+        public GetUserDto? GetByUsername(string username)
         {
             var user = _dbContext.Users
                 .Where(u => u.username == username)
@@ -33,7 +33,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
                     username = u.username,
                     FullName = $"{u.UserProfile.FirstName} {u.UserProfile.LastName}",
                     Mobile = u.UserProfile.Mobile
-                }).First();
+                }).FirstOrDefault();
 
             return user;
         }

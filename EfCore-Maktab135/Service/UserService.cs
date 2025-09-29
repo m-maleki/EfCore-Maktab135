@@ -27,6 +27,7 @@ namespace EfCore_Maktab135.Service
         public int Register(CreateUserDto user)
         {
             var model = _userRepository.GetByUsername(user.Username);
+
             if (model != null && model.username == user.Username)
                 throw new Exception("Username was taken");
             if (user.Username.Length <3)

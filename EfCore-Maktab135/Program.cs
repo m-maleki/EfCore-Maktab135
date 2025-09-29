@@ -84,7 +84,7 @@ void AuthenticationMenu()
                     Console.Write("Enter username: ");
                     var userName = Console.ReadLine()!;
 
-                    Console.Write("Enter password name: ");
+                    Console.Write("Enter password: ");
                     var password = Console.ReadLine()!;
 
 
