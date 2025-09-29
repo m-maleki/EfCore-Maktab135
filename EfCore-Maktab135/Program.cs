@@ -11,46 +11,72 @@ IOrderService orderService = new OrderService();
 IUserService userService = new UserService();
 ICategoryService categoryService = new CategoryService();
 
-Console.WriteLine("1.Login");
-Console.WriteLine("2.Register");
-int loginItem = int.Parse(Console.ReadLine());
 
-if (loginItem == 1)
+
+
+AuthenticationMenu();
+
+void AuthenticationMenu()
 {
-    Console.Write("UserName : ");
-    var username = Console.ReadLine();
-
-    Console.Write("Password : ");
-    var password = Console.ReadLine();
-
-    var login = userService.Login(username, password);
-
-    if (!login)
+    Console.WriteLine("1. Login");
+    Console.WriteLine("2. Register");
+    Console.WriteLine("3. Exit");
+    while (true)
     {
-        Console.WriteLine("username of password is not valid");
-    }
-    else
-    {
-        var loginUserRole = userService.GetRole(username);
-
-        if(loginUserRole == UserRole.User)
+        try
         {
+            int loginItem = int.Parse(Console.ReadLine()!);
+
+            switch (loginItem)
+            {
+                case 1:
+                    Console.Write("UserName : ");
+                    var username = Console.ReadLine();
+
+                    Console.Write("Password : ");
+                    var password = Console.ReadLine();
+
+                    var login = userService.Login(username, password);
+
+                    if (!login)
+                    {
+                        Console.WriteLine("username of password is not valid");
+                    }
+                    else
+                    {
+                        var loginUserRole = userService.GetRole(username);
+
+                        if (loginUserRole == UserRole.User)
+                        {
+                            MemberMenu();
+                        }
+                        else if (loginUserRole == UserRole.Admin)
+                        {
+                            AdminMenu();
+                        }
+                    }
+                    break;
+
+                case 2:
+
+                    break;
+
+                case 3:
+                    Environment.Exit(0);
+                    break;
+            }
 
         }
-        else if (loginUserRole == UserRole.Admin)
+        catch (Exception e)
         {
-            AdminMenu();
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
         }
     }
+    
 }
-if (loginItem == 2)
-{
 
-}
-else
-{
-    return;
-}
+
 
 var customerId = 3;
 
@@ -96,7 +122,7 @@ do
 } while (productId > 0);
 
 Console.Clear();
-Console.WriteLine("Youre basket :");
+Console.WriteLine("Your basket :");
 ConsolePainter.WriteTable(selectedProducts, ConsoleColor.DarkGreen);
 var totalPrice = selectedProducts.Sum(x => x.Price);
 Console.WriteLine($"Total price == {totalPrice}");
@@ -125,6 +151,41 @@ if (Console.ReadKey().Key == ConsoleKey.Enter)
 Console.WriteLine("");
 
 
+
+void MemberMenu()
+{
+    Console.Clear();
+    Console.WriteLine("1. Add a new Product");
+    Console.WriteLine("2. Watch the basket");
+    Console.WriteLine("3. Settings");
+    Console.Write("\nPlease Enter an option: ");
+
+
+    while (true)
+    {
+        try
+        {
+            var selectedOption = int.Parse(Console.ReadLine()!);
+            switch (selectedOption)
+            {
+
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
+        }
+    }
+}
 void AdminMenu()
 {
     Console.Clear();
@@ -132,24 +193,122 @@ void AdminMenu()
     Console.WriteLine("2.Manage Users");
     Console.WriteLine("3.Manage Orders");
 
-    int selectItem = int.Parse(Console.ReadLine());
+    int selectItem = int.Parse(Console.ReadLine()!);
 
     switch(selectItem)
     {
         case 1:
-            ManageCategories();
+            ManageCategoriesMenu();
+            break;
+        case 2:
+            ManageUsersMenu();
+            break;
+        case 3:
+            ManageOrdersMenu();
             break;
     }
 }
 
-void ManageCategories()
+void ManageCategoriesMenu()
 {
     Console.Clear();
     var categories = categoryService.GetAll();
 
-    Console.WriteLine("1.Add");
-    Console.WriteLine("2.Update");
-    Console.WriteLine("3.Delete");
+    Console.WriteLine("1. Category List");
+    Console.WriteLine("2. Add");
+    Console.WriteLine("3. Update");
+    Console.WriteLine("4. Delete");
 
-    ConsolePainter.WriteTable(categories);
+    while (true)
+    {
+        try
+        {
+            var selectedOption = int.Parse(Console.ReadLine()!);
+            switch (selectedOption)
+            {
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            ConsolePainter.RedMessage(e.Message);
+            Console.ReadKey();
+        }
+    }
+}
+
+void ManageOrdersMenu()
+{
+    Console.Clear();
+    Console.WriteLine("1. Order List");
+    Console.WriteLine("2. Filter Orders based on price");
+    Console.WriteLine("3. Update");
+    Console.WriteLine("4. Delete");
+
+    while (true)
+    {
+        try
+        {
+            var selectedOption = int.Parse(Console.ReadLine()!);
+            switch (selectedOption)
+            {
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
+        }
+    }
+}
+
+void ManageUsersMenu()
+{
+    Console.Clear();
+    Console.WriteLine("1. User List");
+    Console.WriteLine("2. Add");
+    Console.WriteLine("3. Activate");
+    Console.WriteLine("4. DeActivate");
+
+    while (true)
+    {
+        try
+        {
+            var selectedOption = int.Parse(Console.ReadLine()!);
+            switch (selectedOption)
+            {
+                case 1:
+                    break;
+
+                case 2:
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
+        }
+    }
 }

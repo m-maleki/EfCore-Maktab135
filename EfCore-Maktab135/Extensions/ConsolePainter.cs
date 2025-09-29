@@ -4,6 +4,32 @@ using System.Reflection;
 
 public static class ConsolePainter
 {
+    public static void RedMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+    public static void YellowMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    public static void GreenMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
+
+    public static void CyanMessage(string message)
+    {
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine(message);
+        Console.ResetColor();
+    }
     public static void Write(string text, ConsoleColor? foreground = null, ConsoleColor? background = null)
     {
         var originalForeground = Console.ForegroundColor;

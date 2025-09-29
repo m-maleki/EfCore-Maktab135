@@ -47,7 +47,8 @@ namespace EfCore_Maktab135.Infrastructure
         {
             optionsBuilder
                 .UseSqlServer(
-                    "Server=localhost;Database=Maktab135Db;user id=sa;password=25915491;trust server certificate=true");
+                    "Data Source=.;Initial Catalog=Maktab135DB;User ID=sa; Password=123456;Trust Server Certificate=True");
+            //Server=localhost;Database=Maktab135Db;user id=sa;password=25915491;trust server certificate=true
             base.OnConfiguring(optionsBuilder);
         }
     }
