@@ -14,6 +14,16 @@ namespace EfCore_Maktab135.Service
             return _userRepository.Get(id);
         }
 
+        public GetUserDto GetByUsername(string username)
+        {
+            var user = _userRepository.GetByUsername(username);
+            if (user == null)
+                throw new Exception("the user not found");
+
+            return user;
+            
+        }
+
         public UserRole GetRole(string username)
         {
             return _userRepository.GetRole(username);

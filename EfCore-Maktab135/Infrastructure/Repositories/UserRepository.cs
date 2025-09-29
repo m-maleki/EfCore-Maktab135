@@ -16,6 +16,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
                 .Where(u => u.Id == id)
                 .Select(u=> new GetUserDto
                 {
+                    Id = u.Id,
                     username = u.username,
                     FullName = $"{u.UserProfile.FirstName} {u.UserProfile.LastName}",
                     Mobile = u.UserProfile.Mobile
@@ -30,6 +31,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
                 .Where(u => u.username == username)
                 .Select(u => new GetUserDto
                 {
+                    Id = u.Id,
                     username = u.username,
                     FullName = $"{u.UserProfile.FirstName} {u.UserProfile.LastName}",
                     Mobile = u.UserProfile.Mobile
@@ -43,6 +45,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
             var users = _dbContext.Users
              .Select(u => new GetUserDto
              {
+                 Id = u.Id,
                  username = u.username,
                  FullName = $"{u.UserProfile.FirstName} {u.UserProfile.LastName}",
                  Mobile = u.UserProfile.Mobile
@@ -75,8 +78,8 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
                 Role = Enum.UserRole.User,
                 UserProfile = new UserProfile
                 {
-                    FirstName = user.Username,
-                    LastName = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
                     Mobile = user.Mobile,
                 }
             };

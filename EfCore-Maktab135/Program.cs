@@ -57,12 +57,12 @@ void AuthenticationMenu()
 
                         if (loginUserRole == UserRole.User)
                         {
-                            currentUser.username = username;
+                            currentUser = userService.GetByUsername(username);
                             MemberMenu();
                         }
                         else if (loginUserRole == UserRole.Admin)
                         {
-                            currentUser.username = username;
+                            currentUser = userService.GetByUsername(username);
                             AdminMenu();
                         }
                     }
@@ -124,91 +124,17 @@ void AuthenticationMenu()
 
 
 
-var customerId = 3;
-
-var selectedProducts = new List<ShowProductDto>();
-int productId = 0;
-
-
-var products = productService.GetAll();
-do
-{
-    Console.Clear();
-    ConsolePainter.WriteTable(products);
-
-    Console.Write("please select a product id : ");
-    productId = int.Parse(Console.ReadLine());
-
-    var selectedProduct = products.FirstOrDefault(x => x.Id == productId);
-
-    if (selectedProduct is null)
-        break;
-
-    if (selectedProducts.Any(x => x.Id == productId))
-    {
-        selectedProducts.First(x => x.Id == productId).Count++;
-    }
-    else
-    {
-        selectedProducts.Add(new ShowProductDto()
-        {
-            Name = selectedProduct.Name,
-            CategoryName = selectedProduct.CategoryName,
-            Price = selectedProduct.Price,
-            Color = selectedProduct.Color,
-            Count = 1,
-            Id = selectedProduct.Id
-        });
-    }
-
-    Console.WriteLine("-----------------------------------");
-    Console.WriteLine("Youre basket :");
-    ConsolePainter.WriteTable(selectedProducts, ConsoleColor.DarkGreen);
-    Console.ReadKey();
-} while (productId > 0);
-
-Console.Clear();
-Console.WriteLine("Your basket :");
-ConsolePainter.WriteTable(selectedProducts, ConsoleColor.DarkGreen);
-var totalPrice = selectedProducts.Sum(x => x.Price);
-Console.WriteLine($"Total price == {totalPrice}");
-Console.WriteLine($"Complete order ? ");
-
-
-if (Console.ReadKey().Key == ConsoleKey.Enter)
-{
-    var orderItems = selectedProducts.Select(x => new OrderItem()
-    {
-        UserId = customerId,
-        Count = x.Count,
-        Price = x.Price,
-        ProductId = x.Id,
-    }).ToList();
-
-    var order = new Order()
-    {
-        TotalPrice = totalPrice,
-        OrderItems = orderItems
-    };
-
-    var orderId = orderService.Create(order);
-}
-
-
-
-
-
 void MemberMenu()
 {
-    Console.Clear();
-    Console.WriteLine("1. Add a new Product");
-    Console.WriteLine("2. Watch the basket");
-    Console.WriteLine("3. Settings");
-    Console.Write("\nPlease Enter an option: ");
-
-
     while (true)
     {
+        Console.Clear();
+        Console.WriteLine("1. Add a new Product");
+        Console.WriteLine("2. My Orders");
+        Console.WriteLine("3. Settings");
+        Console.WriteLine("4. Logout");
+
+        Console.Write("\nPlease Enter an option: ");
         try
         {
             var selectedOption = int.Parse(Console.ReadLine()!);
@@ -216,12 +142,100 @@ void MemberMenu()
             {
 
                 case 1:
+                    
+
+                    var selectedProducts = new List<ShowProductDto>();
+                    int productId = 0;
+
+
+                    var products = productService.GetAll();
+                    do
+                    {
+                        Console.Clear();
+                        ConsolePainter.WriteTable(products);
+
+                        Console.Write("please select a product id : ");
+                        productId = int.Parse(Console.ReadLine());
+
+                        var selectedProduct = products.FirstOrDefault(x => x.Id == productId);
+
+                        if (selectedProduct is null)
+                            break;
+
+                        if (selectedProducts.Any(x => x.Id == productId))
+                        {
+                            selectedProducts.First(x => x.Id == productId).Count++;
+                        }
+                        else
+                        {
+                            selectedProducts.Add(new ShowProductDto()
+                            {
+                                Name = selectedProduct.Name,
+                                CategoryName = selectedProduct.CategoryName,
+                                Price = selectedProduct.Price,
+                                Color = selectedProduct.Color,
+                                Count = 1,
+                                Id = selectedProduct.Id
+                            });
+                        }
+
+                        Console.WriteLine("-----------------------------------");
+                        Console.WriteLine("Your basket :");
+                        ConsolePainter.WriteTable(selectedProducts, ConsoleColor.DarkGreen);
+                        Console.ReadKey();
+                    } while (productId > 0);
+
+                    Console.Clear();
+                    Console.WriteLine("Your basket :");
+                    ConsolePainter.WriteTable(selectedProducts, ConsoleColor.DarkGreen);
+                    var totalPrice = selectedProducts.Sum(x => x.Price);
+                    Console.WriteLine($"Total price == {totalPrice}");
+                    Console.WriteLine($"Complete order ? ");
+
+
+                    if (Console.ReadKey().Key == ConsoleKey.Enter)
+                    {
+                        var orderItems = selectedProducts.Select(x => new OrderItem()
+                        {
+                            UserId = currentUser.Id,
+                            Count = x.Count,
+                            Price = x.Price,
+                            ProductId = x.Id,
+                        }).ToList();
+
+                        var order = new Order()
+                        {
+                            UserId = currentUser.Id,
+                            TotalPrice = totalPrice,
+                            OrderItems = orderItems
+                        };
+
+                        var orderId = orderService.Create(order);
+                        ConsolePainter.GreenMessage("order added");
+                        Console.ReadKey();
+                    }
                     break;
 
                 case 2:
+                    var orders = orderService.GetUserOrders(currentUser.Id);
+                    foreach (var getUserOrderDto in orders)
+                    {
+                        Console.WriteLine($"Order ID: {getUserOrderDto.Id}");
+                        Console.WriteLine($"Order Date:{getUserOrderDto.CreateAt.Date}");
+                        ConsolePainter.WriteTable(getUserOrderDto.OrderItems,ConsoleColor.Yellow,ConsoleColor.Cyan);
+                        Console.WriteLine($"\nTotal Price: {getUserOrderDto.TotalPrice}");
+                        Console.WriteLine("----------------------------------------------");
+                    }
+
+                    Console.ReadKey();
                     break;
 
                 case 3:
+                    MemberSettingsMenu();
+                    break;
+
+                case 4:
+                    AuthenticationMenu();
                     break;
             }
         }
@@ -232,6 +246,44 @@ void MemberMenu()
         }
     }
 }
+
+
+
+void MemberSettingsMenu()
+{
+    while (true)
+    {
+        Console.Clear();
+        ConsolePainter.WriteTable(new List<GetUserDto>(){new GetUserDto()
+        {
+            Id = currentUser.Id,
+            FullName = currentUser.FullName,
+            username = currentUser.username,
+            Mobile = currentUser.Mobile
+        }},ConsoleColor.Yellow, ConsoleColor.Cyan);
+        Console.WriteLine("\n1. Edit profile");
+        Console.WriteLine("2. Delete Account");
+        Console.WriteLine("3. Back");
+
+        int selectItem = int.Parse(Console.ReadLine()!);
+
+        switch (selectItem)
+        {
+            case 1:
+                ConsolePainter.RedMessage("not implement!");
+                Console.ReadKey();
+                break;
+            case 2:
+                ConsolePainter.RedMessage("not implement!");
+                Console.ReadKey();
+                break;
+            case 3:
+                MemberMenu();
+                break;
+        }
+    }
+}
+
 void AdminMenu()
 {
     Console.Clear();
