@@ -9,6 +9,7 @@ namespace EfCore_Maktab135.Interfaces.Repositories
         public bool Login(string username, string password);
         public int Register(CreateUserDto user);
         public GetUserDto Get(int id);
+        public GetUserDto? GetByUsername(string username);
         public List<GetUserDto> GetAll();
         public UserRole GetRole(string username);
     }

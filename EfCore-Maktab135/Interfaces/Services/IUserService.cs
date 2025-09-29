@@ -13,6 +13,7 @@ namespace EfCore_Maktab135.Interfaces.Services
         public bool Login(string username, string password);
         public int Register(CreateUserDto user);
         public GetUserDto Get(int id);
+        public GetUserDto GetByUsername(string username);
         public UserRole GetRole(string username);
     }
 }
