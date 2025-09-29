@@ -8,25 +8,31 @@ namespace EfCore_Maktab135.Service
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository userRepository = new UserRepository();
+        private readonly IUserRepository _userRepository = new UserRepository();
         public GetUserDto Get(int id)
         {
-            return userRepository.Get(id);
+            return _userRepository.Get(id);
         }
 
         public UserRole GetRole(string username)
         {
-            return userRepository.GetRole(username);
+            return _userRepository.GetRole(username);
         }
 
         public bool Login(string username, string password)
         {
-            return userRepository.Login(username, password);
+            return _userRepository.Login(username, password);
         }
 
         public int Register(CreateUserDto user)
-        { 
-            return userRepository.Register(user);
+        {
+            var model = _userRepository.GetByUsername(user.Username);
+            if (model != null && model.username == user.Username)
+                throw new Exception("Username was taken");
+            if (user.Username.Length <3)
+                throw new Exception("Username can not be less than 3 characters");
+
+            return _userRepository.Register(user);
         }
     }
 }

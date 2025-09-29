@@ -12,28 +12,36 @@ IUserService userService = new UserService();
 ICategoryService categoryService = new CategoryService();
 
 
-
-
+GetUserDto? currentUser = new GetUserDto();
+    
+    
+    
+    
+    ;
 AuthenticationMenu();
 
 void AuthenticationMenu()
 {
-    Console.WriteLine("1. Login");
-    Console.WriteLine("2. Register");
-    Console.WriteLine("3. Exit");
     while (true)
     {
         try
         {
+            Console.Clear();
+            Console.WriteLine("1. Login");
+            Console.WriteLine("2. Register");
+            Console.WriteLine("3. Exit");
+
+            Console.Write("\nEnter an option: ");
             int loginItem = int.Parse(Console.ReadLine()!);
 
             switch (loginItem)
             {
                 case 1:
-                    Console.Write("UserName : ");
+                {
+                    Console.Write("UserName: ");
                     var username = Console.ReadLine();
 
-                    Console.Write("Password : ");
+                    Console.Write("Password: ");
                     var password = Console.ReadLine();
 
                     var login = userService.Login(username, password);
@@ -41,6 +49,7 @@ void AuthenticationMenu()
                     if (!login)
                     {
                         Console.WriteLine("username of password is not valid");
+                        Console.ReadKey();
                     }
                     else
                     {
@@ -48,28 +57,65 @@ void AuthenticationMenu()
 
                         if (loginUserRole == UserRole.User)
                         {
+                            currentUser.username = username;
                             MemberMenu();
                         }
                         else if (loginUserRole == UserRole.Admin)
                         {
+                            currentUser.username = username;
                             AdminMenu();
                         }
                     }
                     break;
+                    }
+                    
 
                 case 2:
+                {
+                    Console.Write("Enter first name: ");
+                    var firstName = Console.ReadLine()!;
 
+                    Console.Write("Enter last name: ");
+                    var lastName = Console.ReadLine()!;
+
+                    Console.Write("Enter mobile: ");
+                    var mobile = Console.ReadLine()!;
+
+                    Console.Write("Enter username: ");
+                    var userName = Console.ReadLine()!;
+
+                    Console.Write("Enter password name: ");
+                    var password = Console.ReadLine()!;
+
+
+                    var newUser = new CreateUserDto()
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Mobile = mobile,
+                        Username = userName,
+                        Password = password
+                    };
+                    userService.Register(newUser);
+                    ConsolePainter.GreenMessage("registered successfully");
+                    Console.ReadKey();
                     break;
+                    }
+
 
                 case 3:
                     Environment.Exit(0);
+                    break;
+                default:
+                    ConsolePainter.RedMessage("Invalid input");
+                    Console.ReadKey();
                     break;
             }
 
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
+            ConsolePainter.RedMessage(e.Message);
             Console.ReadKey();
         }
     }
@@ -148,7 +194,7 @@ if (Console.ReadKey().Key == ConsoleKey.Enter)
     var orderId = orderService.Create(order);
 }
 
-Console.WriteLine("");
+
 
 
 

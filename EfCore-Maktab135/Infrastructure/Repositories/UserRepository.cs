@@ -24,6 +24,20 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
             return user;
         }
 
+        public GetUserDto GetByUsername(string username)
+        {
+            var user = _dbContext.Users
+                .Where(u => u.username == username)
+                .Select(u => new GetUserDto
+                {
+                    username = u.username,
+                    FullName = $"{u.UserProfile.FirstName} {u.UserProfile.LastName}",
+                    Mobile = u.UserProfile.Mobile
+                }).First();
+
+            return user;
+        }
+
         public List<GetUserDto> GetAll()
         {
             var users = _dbContext.Users
@@ -56,13 +70,13 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
         {
             var entity = new User
             {
-                username = user.username,
-                password = user.password,
+                username = user.Username,
+                password = user.Password,
                 Role = Enum.UserRole.User,
                 UserProfile = new UserProfile
                 {
-                    FirstName = user.username,
-                    LastName = user.username,
+                    FirstName = user.Username,
+                    LastName = user.Username,
                     Mobile = user.Mobile,
                 }
             };
