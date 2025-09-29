@@ -1,30 +1,25 @@
 # 🛒 EFCore Console Shop Application
 
-این پروژه یک **برنامه فروشگاه کنسولی** با استفاده از **Entity Framework Core** و معماری لایه‌ای است.  
-کاربر می‌تواند ثبت‌نام کند، لاگین شود، محصول انتخاب کند، سفارش ثبت کند و نقش **ادمین** قابلیت مدیریت کاربران، دسته‌بندی‌ها و سفارش‌ها را دارد.
+This project is a **console-based shop application** built with **Entity Framework Core** using a layered architecture.  
+Users can register, log in, browse products, place orders, and admins can manage users, categories, and orders.
 
 ---
 
-## ✨ ویژگی‌ها
-- **سیستم احراز هویت (Authentication)**
-  - ثبت‌نام کاربر جدید
-  - ورود با نام‌کاربری و رمزعبور
-  - نقش‌ها: `User` و `Admin`
+## ✨ Features
+- **Authentication System**
+  - User registration
+  - Login with username and password
+  - Roles: `User` and `Admin`
 
-- **پنل کاربر (Member Menu)**
-  - افزودن محصول به سبد خرید
-  - ثبت سفارش
-  - مشاهده سفارش‌های شخصی
-  - تنظیمات کاربری (ویرایش/حذف اکانت – در حال توسعه)
+- **Member Panel**
+  - Add products to basket
+  - Place orders
+  - View personal orders
+  - Account settings (edit/delete – under development)
 
-- **پنل ادمین (Admin Menu)**
-  - مدیریت دسته‌بندی‌ها (افزودن، ویرایش، حذف)
-  - مدیریت کاربران (لیست، فعال/غیرفعال‌سازی)
-  - مدیریت سفارش‌ها (لیست، فیلتر، بروزرسانی، حذف)
+- **Admin Panel**
+  - Manage categories (add, update, delete)
+  - Manage users (list, activate/deactivate)
+  - Manage orders (list, filter, update, delete)
 
 ---
-
-##📂 ساختار پروژه
-
-
-
