@@ -37,7 +37,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
             return product;
         }
 
-        public List<GetProductDto> GetAll()
+        public List<GetProductDto> GetAll(int page, int pageSize)
         {
             var data = _dbContext.Products
                 .AsNoTracking()
@@ -50,7 +50,7 @@ namespace EfCore_Maktab135.Infrastructure.Repositories
                     Price = x.Price,
                     CategoryName = x.Category.Name,
                     Count = x.Count
-                });
+                }).Skip((page - 1 )* pageSize).Take(pageSize);
 
             var query = data.ToQueryString();
 
