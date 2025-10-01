@@ -5,6 +5,7 @@ namespace EfCore_Maktab135.Entities;
 public class User : BaseEntity
 {
     public string Gender { get; set; }
+    public int Age { get; set; }
     public string username { get; set; }
     public string password { get; set; }
     public UserRole Role { get; set; }
