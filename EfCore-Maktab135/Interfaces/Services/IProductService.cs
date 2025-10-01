@@ -7,7 +7,7 @@ public interface IProductService
 {
     int Create(Product model);
     Product GetById(int id);
-    List<GetProductDto> GetAll();
+    List<GetProductDto> GetAll(int page , int pageSize);
     void Update(Product product);
     void Delete(int id);
 }

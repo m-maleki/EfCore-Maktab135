@@ -11,46 +11,6 @@ IOrderService orderService = new OrderService();
 IUserService userService = new UserService();
 ICategoryService categoryService = new CategoryService();
 
-Console.WriteLine("1.Login");
-Console.WriteLine("2.Register");
-int loginItem = int.Parse(Console.ReadLine());
-
-if (loginItem == 1)
-{
-    Console.Write("UserName : ");
-    var username = Console.ReadLine();
-
-    Console.Write("Password : ");
-    var password = Console.ReadLine();
-
-    var login = userService.Login(username, password);
-
-    if (!login)
-    {
-        Console.WriteLine("username of password is not valid");
-    }
-    else
-    {
-        var loginUserRole = userService.GetRole(username);
-
-        if(loginUserRole == UserRole.User)
-        {
-
-        }
-        else if (loginUserRole == UserRole.Admin)
-        {
-            AdminMenu();
-        }
-    }
-}
-if (loginItem == 2)
-{
-
-}
-else
-{
-    return;
-}
 
 var customerId = 3;
 
@@ -58,7 +18,7 @@ var selectedProducts = new List<ShowProductDto>();
 int productId = 0;
 
 
-var products = productService.GetAll();
+var products = productService.GetAll(1,10);
 do
 {
     Console.Clear();

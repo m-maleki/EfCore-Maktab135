@@ -19,9 +19,9 @@ public class ProductService : IProductService
         throw new NotImplementedException();
     }
 
-    public List<GetProductDto> GetAll()
+    public List<GetProductDto> GetAll(int page , int pageSize)
     {
-        return _repository.GetAll();
+        return _repository.GetAll(page , pageSize);
     }
 
     public void Update(Product product)
